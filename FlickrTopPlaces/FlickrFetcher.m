@@ -26,7 +26,9 @@ static int maxResults = 50;
 
 + (NSArray *)topPlaces
 {
-	return [[[self flickrQuery:@"places.getTopPlacesList&place_type_id=7"] objectForKey:@"places"] objectForKey:@"place"];
+    NSDictionary* dict = [self flickrQuery:@"places.getTopPlacesList&place_type_id=7"];
+    NSDictionary* placesDict = [dict objectForKey:@"places"];    
+	return [placesDict objectForKey:@"place"];
 }
 
 // Core flickr.photos.search method.
