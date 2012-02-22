@@ -9,6 +9,7 @@
 #import "FlickrImageListViewController.h"
 #import "FlickrFetcherHelper.h"
 #import "FlickrImageViewController.h"
+#import "RecentPhotos.h"
 
 @interface FlickrImageListViewController()
 @property (nonatomic, strong) NSArray* imageList;
@@ -124,7 +125,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     NSDictionary* photo = [self.imageList objectAtIndex:indexPath.row];
@@ -194,6 +195,8 @@
         NSDictionary* photo = [self.imageList 
                                objectAtIndex:self.tableView.indexPathForSelectedRow.row];
         [segue.destinationViewController reloadImageWithInfo:photo];
+        // save this photo in recent photos
+        [RecentPhotos appendPhoto:photo];
     }
 }
 

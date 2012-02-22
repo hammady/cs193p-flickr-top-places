@@ -7,9 +7,16 @@
 //
 
 #import "FlickrRecentPlacesTableViewController.h"
+#import "RecentPhotos.h"
+#import "FlickrFetcherHelper.h"
+#import "FlickrImageViewController.h"
 
+@interface FlickrRecentPlacesTableViewController()
+@property (nonatomic, strong) NSArray* recentPhotosList;
+@end
 
 @implementation FlickrRecentPlacesTableViewController
+@synthesize recentPhotosList = _recentPhotosList;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -51,6 +58,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.recentPhotosList = [RecentPhotos retrieveList];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,30 +84,27 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return self.recentPhotosList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"Recent Place Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    // Configure the cell...
+    NSInteger row = self.recentPhotosList.count - indexPath.row - 1;    // newest on top
+    
+    NSDictionary* photo = [self.recentPhotosList objectAtIndex:row];
+    NSArray* titleAndDescr = [FlickrFetcherHelper photoTitleAndDescriptionForPhoto:photo];
+    
+    cell.textLabel.text = [titleAndDescr objectAtIndex:0];
+    cell.detailTextLabel.text = [titleAndDescr objectAtIndex:1];
     
     return cell;
 }
@@ -153,6 +159,18 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Image view segue"]) {
+        NSInteger row = self.recentPhotosList.count - self.tableView.indexPathForSelectedRow.row - 1;    // newest on top
+
+        NSDictionary* photo = [self.recentPhotosList 
+                               objectAtIndex:row];
+        [segue.destinationViewController reloadImageWithInfo:photo];
+    }
 }
 
 @end
