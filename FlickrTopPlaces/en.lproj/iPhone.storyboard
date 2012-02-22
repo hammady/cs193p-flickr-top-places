@@ -135,14 +135,14 @@
                 <viewController id="1Ku-wg-0wp" customClass="FlickrImageViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mbs-Qy-SMz">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="jH8-zN-TrY">
-                                <rect key="frame" x="-20" y="-20" width="360" height="500"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" minimumZoomScale="0.25" maximumZoomScale="4" bouncesZoom="NO" id="jH8-zN-TrY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="KW0-0g-cS4">
-                                        <rect key="frame" x="20" y="20" width="320" height="460"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="TopLeft" id="KW0-0g-cS4">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
                                 </subviews>
@@ -150,14 +150,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Image" id="dOf-yq-xGI"/>
+                    <navigationItem key="navigationItem" title="&lt;Image>" id="dOf-yq-xGI"/>
                     <connections>
                         <outlet property="imageView" destination="KW0-0g-cS4" id="B8W-bH-ioK"/>
                         <outlet property="scrollView" destination="jH8-zN-TrY" id="B3C-XE-doy"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2696" y="-951"/>
+            <point key="canvasLocation" x="2620" y="-994"/>
         </scene>
         <scene sceneID="XeF-h8-MXI">
             <objects>
@@ -220,7 +220,7 @@
                             <outlet property="delegate" destination="2VE-yr-MUB" id="Eda-FW-Ni8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Image List" id="8aG-aa-KV7"/>
+                    <navigationItem key="navigationItem" title="&lt;Image List>" id="8aG-aa-KV7"/>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="2300" y="-485"/>
