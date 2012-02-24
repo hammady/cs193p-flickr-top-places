@@ -26,13 +26,13 @@
         <scene sceneID="2eM-ov-l5d">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bz0-vW-6aV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController title="Recent Places" id="gW0-FO-bxT" customClass="FlickrRecentPlacesTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Recent Places" id="gW0-FO-bxT" customClass="RecentPhotosTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tZi-Ny-fZr">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Recent Place Cell" textLabel="pXQ-AD-ty2" detailTextLabel="6HO-FG-NVM" style="IBUITableViewCellStyleSubtitle" id="3Zg-6B-x9h">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Image summary cell" textLabel="pXQ-AD-ty2" detailTextLabel="6HO-FG-NVM" style="IBUITableViewCellStyleSubtitle" id="3Zg-6B-x9h">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -57,7 +57,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <connections>
-                                    <segue destination="1Ku-wg-0wp" kind="push" identifier="Image view segue" id="fqL-tv-WMb"/>
+                                    <segue destination="1Ku-wg-0wp" kind="push" identifier="Image view segue from recents" id="aft-Ue-ufL"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -183,7 +183,7 @@
         <scene sceneID="YUf-u1-8Tt">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wgk-vb-KYA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="2VE-yr-MUB" customClass="FlickrImageListViewController" sceneMemberID="viewController">
+                <tableViewController id="2VE-yr-MUB" customClass="PlacePhotosTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aSe-lH-PJB">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -248,18 +248,12 @@
         </scene>
     </scenes>
     <classes>
-        <class className="FlickrImageListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrImageListViewController.h"/>
-        </class>
         <class className="FlickrImageViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrImageViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
             </relationships>
-        </class>
-        <class className="FlickrRecentPlacesTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrRecentPlacesTableViewController.h"/>
         </class>
         <class className="FlickrTopPlacesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrTopPlacesTableViewController.h"/>
@@ -268,6 +262,15 @@
                 <relationship kind="outlet" name="refreshButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
+        <class className="ImageListTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ImageListTableViewController.h"/>
+        </class>
+        <class className="PlacePhotosTableViewController" superclassName="ImageListTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlacePhotosTableViewController.h"/>
+        </class>
+        <class className="RecentPhotosTableViewController" superclassName="ImageListTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecentPhotosTableViewController.h"/>
+        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -275,6 +278,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fqL-tv-WMb"/>
+        <segue reference="aft-Ue-ufL"/>
     </inferredMetricsTieBreakers>
 </document>
