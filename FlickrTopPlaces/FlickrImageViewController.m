@@ -8,6 +8,7 @@
 
 #import "FlickrImageViewController.h"
 #import "FlickrFetcherHelper.h"
+#import "FlickrImage.h"
 
 @interface FlickrImageViewController()  <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -98,19 +99,15 @@
     
     self.navigationItem.title = [titleAndDescr objectAtIndex:0];
     
-    __block NSData* imageData;
     dispatch_queue_t photosQueue = dispatch_queue_create("Flickr photos fetcher", NULL);
     dispatch_async(photosQueue, ^{
-        imageData = [FlickrFetcherHelper 
-                             imageDataForPhotoWithFlickrInfo:info 
-                             format:FlickrFetcherPhotoFormatLarge];
-        NSString* url = [FlickrFetcherHelper urlStringForPhotoWithFlickrInfo:info
-                                                      format:FlickrFetcherPhotoFormatLarge];
-        NSLog(@"Image url: %@ with data length: %x", url, imageData.length);
+        
+        __block UIImage* image = 
+        [FlickrImage imageWithInfo:info
+                            format:FlickrFetcherPhotoFormatLarge];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
-            UIImage* image = [[UIImage alloc] initWithData:imageData];
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
             self.scrollView.contentSize = image.size;

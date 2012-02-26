@@ -13,6 +13,7 @@
 
 #define PHOTO_DICT_TITLE @"title"
 #define PHOTO_DICT_DESCR_PATH @"description._content"
+#define PHOTO_DICT_ID   @"id"
 
 #define COUNTRIES_DICT_COUNTRYNAME @"CountryName"
 #define COUNTRIES_DICT_PLACES @"Places"
