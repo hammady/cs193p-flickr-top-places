@@ -10,10 +10,14 @@
 
 #define PLACE_DICT_NAME @"_content"
 #define PLACE_DICT_PLACEID @"place_id"
+#define PLACE_DICT_LAT @"latitude"
+#define PLACE_DICT_LNG @"longitude"
 
 #define PHOTO_DICT_TITLE @"title"
 #define PHOTO_DICT_DESCR_PATH @"description._content"
 #define PHOTO_DICT_ID   @"id"
+#define PHOTO_DICT_LAT @"latitude"
+#define PHOTO_DICT_LNG @"longitude"
 
 #define COUNTRIES_DICT_COUNTRYNAME @"CountryName"
 #define COUNTRIES_DICT_PLACES @"Places"

@@ -10,6 +10,8 @@
 #import "FlickrFetcherHelper.h"
 #import "FlickrImageViewController.h"
 #import "RecentPhotos.h"
+#import "FlickrPhotoMKAnnotation.h"
+#import "FlickrMapViewController.h"
 
 @interface ImageListTableViewController()
 @end
@@ -91,6 +93,23 @@
         [segue.destinationViewController reloadImageWithInfo:photo];
         // save this photo in recent photos
         [RecentPhotos appendPhoto:photo];
+    } else if ([segue.identifier isEqualToString:@"Show Map"]) {
+        // prepare annotations
+        NSMutableArray* annotations = [[NSMutableArray alloc] 
+                                       initWithCapacity:self.imageList.count];
+        for (NSDictionary* imageDict in self.imageList) {
+            NSArray* titleAndDescr = [FlickrFetcherHelper photoTitleAndDescriptionForPhoto:imageDict];
+            NSString* title = [titleAndDescr objectAtIndex:0];
+            NSString* subtitle = [titleAndDescr lastObject];
+            CLLocationCoordinate2D coord;
+            coord.latitude = [[imageDict objectForKey:PHOTO_DICT_LAT] doubleValue];
+            coord.longitude = [[imageDict objectForKey:PHOTO_DICT_LNG] doubleValue];
+            [annotations addObject:[FlickrPhotoMKAnnotation 
+                                    flickrPhotoMKAnnotationWithTitle:title
+                                    subtitle:subtitle
+                                    coord:coord]];
+        }
+        [segue.destinationViewController setAnnotations:annotations];
     }
 }
 

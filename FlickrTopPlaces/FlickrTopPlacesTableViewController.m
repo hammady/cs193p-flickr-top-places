@@ -9,6 +9,8 @@
 #import "FlickrTopPlacesTableViewController.h"
 #import "FlickrFetcherHelper.h"
 #import "PlacePhotosTableViewController.h"
+#import "FlickrPhotoMKAnnotation.h"
+#import "FlickrMapViewController.h"
 
 @interface FlickrTopPlacesTableViewController()
 @property (nonatomic, strong) NSArray* countries;
@@ -101,14 +103,14 @@
 - (IBAction)refresh:(id)sender {
     UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [spinner startAnimating];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     
     __block NSArray* remotePlaces;
     dispatch_queue_t fetcher_thread = dispatch_queue_create("Flickr downloader", NULL);
     dispatch_async(fetcher_thread, ^{
         remotePlaces = [FlickrFetcherHelper topPlacesPerCountry];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.navigationItem.rightBarButtonItem = sender;
+            self.navigationItem.leftBarButtonItem = sender;
             self.countries = remotePlaces;
         });
     });
@@ -124,6 +126,27 @@
         NSArray* places = [country objectForKey:COUNTRIES_DICT_PLACES];
         NSDictionary* place = [places objectAtIndex:indexPath.row];
         [segue.destinationViewController setPlace:place];
+    } else if ([segue.identifier isEqualToString:@"Show Map"]) {
+        // prepare annotations
+        NSMutableArray* annotations = [[NSMutableArray alloc] initWithCapacity:50];
+        for (NSDictionary* countryDict in self.countries) {
+            NSString* countryName = [countryDict objectForKey:COUNTRIES_DICT_COUNTRYNAME];
+            NSArray* countryPlaces = [countryDict objectForKey:COUNTRIES_DICT_PLACES];
+            for (NSDictionary* placeDict in countryPlaces) {
+                NSString* placeName = [placeDict objectForKey:PLACE_DICT_NAME];
+                NSString* title = [[FlickrFetcherHelper cityNameForPlaceWithName:placeName] 
+                                   stringByAppendingFormat:@", %@", countryName];
+                NSString* subtitle = [FlickrFetcherHelper restOfPlaceNameForPlaceWithName:placeName];
+                CLLocationCoordinate2D coord;
+                coord.latitude = [[placeDict objectForKey:PLACE_DICT_LAT] doubleValue];
+                coord.longitude = [[placeDict objectForKey:PLACE_DICT_LNG] doubleValue];
+                [annotations addObject:[FlickrPhotoMKAnnotation 
+                                        flickrPhotoMKAnnotationWithTitle:title
+                                        subtitle:subtitle
+                                        coord:coord]];
+            }
+        }
+        [segue.destinationViewController setAnnotations:annotations];
     }
 }
 

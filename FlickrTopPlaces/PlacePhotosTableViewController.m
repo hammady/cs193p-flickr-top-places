@@ -23,6 +23,7 @@
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     spinner.hidesWhenStopped = YES;
     [spinner startAnimating];
+    UIBarButtonItem* originalRightButton = self.navigationItem.rightBarButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     
     self.navigationItem.title = [FlickrFetcherHelper cityNameForPlaceWithName:[self.place objectForKey:PLACE_DICT_NAME]];
@@ -34,6 +35,7 @@
         //NSLog(@"Photos returned: %@", photos);
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
+            self.navigationItem.rightBarButtonItem = originalRightButton;
             self.imageList = photos;
         });
     });

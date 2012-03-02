@@ -21,7 +21,7 @@
                     </connections>
                 </tabBarController>
             </objects>
-            <point key="canvasLocation" x="1119" y="-42"/>
+            <point key="canvasLocation" x="1067" y="-82"/>
         </scene>
         <scene sceneID="2eM-ov-l5d">
             <objects>
@@ -66,10 +66,16 @@
                             <outlet property="delegate" destination="gW0-FO-bxT" id="Cku-Je-aOr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Recent Photos" id="bRf-Gk-5Py"/>
+                    <navigationItem key="navigationItem" title="Recent Photos" id="bRf-Gk-5Py">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="Oii-Mv-881">
+                            <connections>
+                                <segue destination="dqn-DP-4Vf" kind="push" identifier="Show Map" id="9sW-Gl-VhX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="2121" y="253"/>
+            <point key="canvasLocation" x="2701" y="217"/>
         </scene>
         <scene sceneID="ZOQ-7v-v0G">
             <objects>
@@ -118,9 +124,14 @@
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Item" id="e6f-Di-stl"/>
                     <navigationItem key="navigationItem" title="Top Places" id="zmf-E9-19T">
-                        <barButtonItem key="rightBarButtonItem" title="Refresh" id="AKJ-ly-6PP">
+                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="AKJ-ly-6PP">
                             <connections>
                                 <action selector="refresh:" destination="Imt-wb-uAC" id="BQF-GR-rz9"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="p2S-kk-hpL">
+                            <connections>
+                                <segue destination="dqn-DP-4Vf" kind="push" identifier="Show Map" id="VTs-Jj-5zS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -130,7 +141,30 @@
                     </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1888" y="-955"/>
+            <point key="canvasLocation" x="2121" y="-1211"/>
+        </scene>
+        <scene sceneID="nKl-DQ-ljv">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Svp-zt-ZQJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="dqn-DP-4Vf" customClass="FlickrMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AZT-GQ-2OO">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lmf-MD-Zzi">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Map" id="esZ-Vp-rJ5"/>
+                    <connections>
+                        <outlet property="mapView" destination="Lmf-MD-Zzi" id="EQP-OU-KeU"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="3536" y="-1165"/>
         </scene>
         <scene sceneID="1f6-Rz-uhV">
             <objects>
@@ -160,7 +194,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2746" y="-48"/>
+            <point key="canvasLocation" x="3566" y="110"/>
         </scene>
         <scene sceneID="XeF-h8-MXI">
             <objects>
@@ -223,10 +257,16 @@
                             <outlet property="delegate" destination="2VE-yr-MUB" id="Eda-FW-Ni8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="&lt;Image List>" id="8aG-aa-KV7"/>
+                    <navigationItem key="navigationItem" title="&lt;Image List>" id="8aG-aa-KV7">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="AQ5-Qj-aqy">
+                            <connections>
+                                <segue destination="dqn-DP-4Vf" kind="push" identifier="Show Map" id="zem-l4-auI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="2138" y="-345"/>
+            <point key="canvasLocation" x="2674" y="-469"/>
         </scene>
         <scene sceneID="Fb0-XO-IYr">
             <objects>
@@ -255,6 +295,12 @@
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
             </relationships>
         </class>
+        <class className="FlickrMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrMapViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+            </relationships>
+        </class>
         <class className="FlickrTopPlacesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrTopPlacesTableViewController.h"/>
             <relationships>
@@ -278,6 +324,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="aft-Ue-ufL"/>
+        <segue reference="VTs-Jj-5zS"/>
+        <segue reference="JSQ-e2-tOc"/>
     </inferredMetricsTieBreakers>
 </document>
