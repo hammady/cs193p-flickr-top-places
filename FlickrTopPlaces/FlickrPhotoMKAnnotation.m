@@ -12,6 +12,7 @@
 @synthesize title = _title;
 @synthesize subtitle = _subtitle;
 @synthesize coordinate = _coord;
+@synthesize infoDict = _placeDict;
 
 +(FlickrPhotoMKAnnotation*) flickrPhotoMKAnnotationWithTitle:(NSString *)title 
                                                     subtitle:(NSString *)subtitle 

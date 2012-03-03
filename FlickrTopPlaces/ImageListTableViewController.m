@@ -12,8 +12,9 @@
 #import "RecentPhotos.h"
 #import "FlickrPhotoMKAnnotation.h"
 #import "FlickrMapViewController.h"
+#import "FlickrImage.h"
 
-@interface ImageListTableViewController()
+@interface ImageListTableViewController() <FlickrMapViewControllerDelegate>
 @end
 
 @implementation ImageListTableViewController
@@ -104,14 +105,44 @@
             CLLocationCoordinate2D coord;
             coord.latitude = [[imageDict objectForKey:PHOTO_DICT_LAT] doubleValue];
             coord.longitude = [[imageDict objectForKey:PHOTO_DICT_LNG] doubleValue];
-            [annotations addObject:[FlickrPhotoMKAnnotation 
-                                    flickrPhotoMKAnnotationWithTitle:title
-                                    subtitle:subtitle
-                                    coord:coord]];
+            FlickrPhotoMKAnnotation *annotation = [FlickrPhotoMKAnnotation 
+                                                   flickrPhotoMKAnnotationWithTitle:title
+                                                   subtitle:subtitle
+                                                   coord:coord];
+            annotation.infoDict = imageDict;
+            [annotations addObject:annotation];
         }
         [segue.destinationViewController setAnnotations:annotations];
+        [segue.destinationViewController setDelegate:self];
     }
 }
 
+#pragma mark - FlickrMapViewControllerDelegate methods
+
+-(NSString*) flickrMapViewControllerAnnotationButtonSegueId
+{
+    return @"Image view segue from map";
+}
+
+-(void) flickrMapViewControllerPrepareForSegue:(UIStoryboardSegue *)segue forAnnotation:(id<MKAnnotation>)annotation
+{
+    if ([segue.identifier isEqualToString:@"Image view segue from map"]) {
+        FlickrPhotoMKAnnotation *photoAnnotation = (FlickrPhotoMKAnnotation*) annotation;
+        [segue.destinationViewController reloadImageWithInfo:photoAnnotation.infoDict];
+        [RecentPhotos appendPhoto:photoAnnotation.infoDict];
+        // TODO recent mgmt should better go to FlickrImageViewControoler
+    }
+}
+
+-(BOOL) flickrMapViewControllerAnnotationHasThumbnail
+{
+    return YES;
+}
+
+-(UIImage*) flickrMapViewControllerThumbnailWithInfo:(NSDictionary *)info
+{
+    return [FlickrImage imageWithInfo:info
+                                format:FlickrFetcherPhotoFormatSquare];
+}
 
 @end

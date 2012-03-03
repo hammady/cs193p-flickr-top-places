@@ -161,10 +161,12 @@
                     <navigationItem key="navigationItem" title="Map" id="esZ-Vp-rJ5"/>
                     <connections>
                         <outlet property="mapView" destination="Lmf-MD-Zzi" id="EQP-OU-KeU"/>
+                        <segue destination="2VE-yr-MUB" kind="push" identifier="Image list segue from map" id="3tB-vR-pyE"/>
+                        <segue destination="1Ku-wg-0wp" kind="push" identifier="Image view segue from map" id="aLn-35-4VD"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3536" y="-1165"/>
+            <point key="canvasLocation" x="3342" y="-1032"/>
         </scene>
         <scene sceneID="1f6-Rz-uhV">
             <objects>
@@ -323,8 +325,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="VTs-Jj-5zS"/>
-        <segue reference="JSQ-e2-tOc"/>
-    </inferredMetricsTieBreakers>
 </document>

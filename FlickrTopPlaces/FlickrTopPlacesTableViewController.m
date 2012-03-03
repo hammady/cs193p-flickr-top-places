@@ -12,7 +12,7 @@
 #import "FlickrPhotoMKAnnotation.h"
 #import "FlickrMapViewController.h"
 
-@interface FlickrTopPlacesTableViewController()
+@interface FlickrTopPlacesTableViewController() <FlickrMapViewControllerDelegate>
 @property (nonatomic, strong) NSArray* countries;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 - (IBAction)refresh:(id)sender;
@@ -140,14 +140,37 @@
                 CLLocationCoordinate2D coord;
                 coord.latitude = [[placeDict objectForKey:PLACE_DICT_LAT] doubleValue];
                 coord.longitude = [[placeDict objectForKey:PLACE_DICT_LNG] doubleValue];
-                [annotations addObject:[FlickrPhotoMKAnnotation 
-                                        flickrPhotoMKAnnotationWithTitle:title
-                                        subtitle:subtitle
-                                        coord:coord]];
+                FlickrPhotoMKAnnotation *annotation = [FlickrPhotoMKAnnotation 
+                                                       flickrPhotoMKAnnotationWithTitle:title
+                                                       subtitle:subtitle
+                                                       coord:coord];
+                annotation.infoDict = placeDict;
+                [annotations addObject:annotation];
             }
         }
         [segue.destinationViewController setAnnotations:annotations];
+        [segue.destinationViewController setDelegate:self];
     }
+}
+
+#pragma mark - FlickrMapViewControllerDelegate methods
+
+-(NSString*) flickrMapViewControllerAnnotationButtonSegueId
+{
+    return @"Image list segue from map";
+}
+
+-(void) flickrMapViewControllerPrepareForSegue:(UIStoryboardSegue *)segue forAnnotation:(id<MKAnnotation>)annotation
+{
+    if ([segue.identifier isEqualToString:@"Image list segue from map"]) {
+        FlickrPhotoMKAnnotation *photoAnnotation = (FlickrPhotoMKAnnotation*) annotation;
+        [segue.destinationViewController setPlace:photoAnnotation.infoDict];
+    }
+}
+
+-(BOOL) flickrMapViewControllerAnnotationHasThumbnail
+{
+    return NO;
 }
 
 @end

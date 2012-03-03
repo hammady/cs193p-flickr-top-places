@@ -164,6 +164,10 @@ static UInt64 _cacheSize;
     
     if ([cacheResult isKindOfClass:[NSString class]]) {
         // cache miss, fetch it
+        
+        // simulate slow connection
+        // sleep(5);
+
         imageData = [FlickrFetcherHelper 
                  imageDataForPhotoWithFlickrInfo:info 
                  format:format];

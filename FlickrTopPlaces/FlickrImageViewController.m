@@ -13,13 +13,15 @@
 @interface FlickrImageViewController()  <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) NSDictionary* imageInfo;
 -(void) recalculateMinAndMaxZoomScale;
 -(void) displayWholeImage;
 @end
 
 @implementation FlickrImageViewController
-@synthesize imageView;
-@synthesize scrollView;
+@synthesize imageView = _imageView;
+@synthesize scrollView = _scrollView;
+@synthesize imageInfo = _imageInfo;
 
 #pragma mark - View lifecycle
 
@@ -89,6 +91,9 @@
 
 -(void) reloadImageWithInfo:(NSDictionary *)info
 {
+    // store info as instance variable to compare it afterwards with the parameter
+    self.imageInfo = info;
+    
     UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] 
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     spinner.hidesWhenStopped = YES;
@@ -105,15 +110,28 @@
         __block UIImage* image = 
         [FlickrImage imageWithInfo:info
                             format:FlickrFetcherPhotoFormatLarge];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
-            self.imageView.image = image;
-            self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-            self.scrollView.contentSize = image.size;
             
-            [self recalculateMinAndMaxZoomScale];
-            [self displayWholeImage];
+            /* we compare instance variable self.imageInfo (which might have
+             been changed by a later call to reloadImageWithInfo) with the local
+             variable info which is now const to make sure we are indeed
+             displaying the same image that was originally requested.
+             This is not useful in iPhone because each time an image is requested
+             A segue happens and a new instance of this VC is created so there
+             is no interference between imageViews. However in iPad where no 
+             segue happens, but image is replaced, this is essentially useful
+             */
+            if (self.imageInfo == info) {
+                //NSLog(@"Back from flickr with title %@", [info objectForKey:PHOTO_DICT_TITLE]);
+                
+                self.imageView.image = image;
+                self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+                self.scrollView.contentSize = image.size;
+                
+                [self recalculateMinAndMaxZoomScale];
+                [self displayWholeImage];
+            }
         });
     });
     dispatch_release(photosQueue);    
