@@ -9,6 +9,7 @@
 #import "FlickrImageViewController.h"
 #import "FlickrFetcherHelper.h"
 #import "FlickrImage.h"
+#import "RecentPhotos.h"
 
 @interface FlickrImageViewController()  <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -93,6 +94,9 @@
 {
     // store info as instance variable to compare it afterwards with the parameter
     self.imageInfo = info;
+    [RecentPhotos appendPhoto:info];
+
+    self.imageView.image = nil;
     
     UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] 
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

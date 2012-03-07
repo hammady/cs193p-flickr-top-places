@@ -25,7 +25,7 @@
 -(void) updateMapWithAnnotations:(NSArray*) annotations
 {
     // skip this expensive function if mapView is not ready yet
-    if (!self.mapView) return;
+    if (!self.mapView || !annotations || !annotations.count) return;
     
     // attach annotations
     [self.mapView removeAnnotations:self.mapView.annotations];
@@ -71,6 +71,7 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
+    self.splitViewController.delegate = self;
     // attach annotations to mapView
     [self updateMapWithAnnotations:self.annotations];
 }
@@ -98,14 +99,19 @@
         view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation
                                             reuseIdentifier:@"ann"];
         view.canShowCallout = YES;
-        // build accessories here for the callout (but don't load thumbnail yet)
-        if ([self.delegate flickrMapViewControllerAnnotationHasThumbnail]) {
-            view.leftCalloutAccessoryView = [[UIImageView alloc] 
-                                         initWithFrame:CGRectMake(0, 0, 30, 30)];
-        }
         UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         view.rightCalloutAccessoryView = button;
     }
+    // build accessories here for the callout (but don't load thumbnail yet)
+    // creating thumbnail accessory is not redundant because same MapView
+    // is reused between different delegates, some of them could have thumbnail
+    // and some not, so we make sure thumbnail is set accordingly
+    if ([self.delegate flickrMapViewControllerAnnotationHasThumbnail]) {
+        view.leftCalloutAccessoryView = [[UIImageView alloc] 
+                                         initWithFrame:CGRectMake(0, 0, 30, 30)];
+    }
+    else
+        view.leftCalloutAccessoryView = nil;
     view.annotation = annotation;
     return view;
 }
@@ -142,14 +148,26 @@
 calloutAccessoryControlTapped:(UIControl *)control
 {
     if ([control isKindOfClass:[UIButton class]]) {
-        NSString* segueId = [self.delegate flickrMapViewControllerAnnotationButtonSegueId];
-        [self performSegueWithIdentifier:segueId sender:view.annotation];
+        FlickrPhotoMKAnnotation* photoAnnotation = (FlickrPhotoMKAnnotation*) view.annotation;
+        NSString* segueId = [self.delegate flickrMapViewControllerSegueIdForAnnotationDict:photoAnnotation.infoDict];
+        if (segueId) {
+            [self performSegueWithIdentifier:segueId sender:photoAnnotation.infoDict];
+        }
     }
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    [self.delegate flickrMapViewControllerPrepareForSegue:segue forAnnotation:sender];
+    [self.delegate flickrMapViewControllerPrepareForSegue:segue withDict:sender];
+}
+
+#pragma mark - UISplitViewControllerDelegate methods
+
+-(BOOL) splitViewController:(UISplitViewController *)svc 
+   shouldHideViewController:(UIViewController *)vc 
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end

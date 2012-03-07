@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SplitViewControllerAwareTableViewController.h"
 
-@interface FlickrTopPlacesTableViewController : UITableViewController
+@interface FlickrTopPlacesTableViewController : SplitViewControllerAwareTableViewController
 
 @end

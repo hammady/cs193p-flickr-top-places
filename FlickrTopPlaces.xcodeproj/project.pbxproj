@@ -28,6 +28,7 @@
 		31204F0815015A8C00B0DD04 /* FlickrMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31204F0715015A8B00B0DD04 /* FlickrMapViewController.m */; };
 		31204F0B15015BF600B0DD04 /* FlickrPhotoMKAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31204F0A15015BF500B0DD04 /* FlickrPhotoMKAnnotation.m */; };
 		3133FCBE14FA73BE00474A96 /* FlickrImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3133FCBD14FA73BE00474A96 /* FlickrImage.m */; };
+		31502D4E1504C01500E21714 /* SplitViewControllerAwareTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31502D4D1504C01500E21714 /* SplitViewControllerAwareTableViewController.m */; };
 		3152A21214F587750037F537 /* RecentPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 3152A21114F587750037F537 /* RecentPhotos.m */; };
 		31A779AD14F3C87D0088D039 /* FlickrTopPlacesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A779AC14F3C87D0088D039 /* FlickrTopPlacesTableViewController.m */; };
 		31A779B014F3C8A50088D039 /* RecentPhotosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A779AF14F3C8A50088D039 /* RecentPhotosTableViewController.m */; };
@@ -75,6 +76,8 @@
 		31204F0A15015BF500B0DD04 /* FlickrPhotoMKAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPhotoMKAnnotation.m; sourceTree = "<group>"; };
 		3133FCBC14FA73BE00474A96 /* FlickrImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrImage.h; sourceTree = "<group>"; };
 		3133FCBD14FA73BE00474A96 /* FlickrImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrImage.m; sourceTree = "<group>"; };
+		31502D4C1504C01500E21714 /* SplitViewControllerAwareTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewControllerAwareTableViewController.h; sourceTree = "<group>"; };
+		31502D4D1504C01500E21714 /* SplitViewControllerAwareTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitViewControllerAwareTableViewController.m; sourceTree = "<group>"; };
 		3152A21014F587750037F537 /* RecentPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentPhotos.h; sourceTree = "<group>"; };
 		3152A21114F587750037F537 /* RecentPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentPhotos.m; sourceTree = "<group>"; };
 		31A779AB14F3C87C0088D039 /* FlickrTopPlacesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrTopPlacesTableViewController.h; sourceTree = "<group>"; };
@@ -139,6 +142,8 @@
 			children = (
 				310D6E0B14F2E4770083D314 /* FlickrTopPlacesAppDelegate.h */,
 				310D6E0C14F2E4770083D314 /* FlickrTopPlacesAppDelegate.m */,
+				31502D4C1504C01500E21714 /* SplitViewControllerAwareTableViewController.h */,
+				31502D4D1504C01500E21714 /* SplitViewControllerAwareTableViewController.m */,
 				310D6E0E14F2E4770083D314 /* iPhone.storyboard */,
 				31EA20EF14F4F1640001150E /* PlacePhotosTableViewController.h */,
 				31204F0615015A8B00B0DD04 /* FlickrMapViewController.h */,
@@ -284,6 +289,7 @@
 				3133FCBE14FA73BE00474A96 /* FlickrImage.m in Sources */,
 				31204F0815015A8C00B0DD04 /* FlickrMapViewController.m in Sources */,
 				31204F0B15015BF600B0DD04 /* FlickrPhotoMKAnnotation.m in Sources */,
+				31502D4E1504C01500E21714 /* SplitViewControllerAwareTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

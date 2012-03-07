@@ -12,6 +12,7 @@
 @implementation PlacePhotosTableViewController
 
 @synthesize place = _place;
+//@synthesize delegate = _delegate;
 
 #pragma mark - View lifecycle
 

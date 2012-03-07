@@ -9,6 +9,10 @@
 #import "RecentPhotosTableViewController.h"
 #import "RecentPhotos.h"
 
+/*@interface RecentPhotosTableViewController() <ImageListTableViewControllerDelegate>
+@end
+*/
+
 @implementation RecentPhotosTableViewController
 
 #pragma mark - View lifecycle
@@ -24,6 +28,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.reversedList = YES;
+    //self.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -33,11 +38,20 @@
     // e.g. self.myOutlet = nil;
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.imageList = [RecentPhotos retrieveList];
-    [self.tableView reloadData];
+    [self.tableView reloadData];    
 }
 
+/*
+-(void) imageListTVCNewPhotosAvailable:(NSArray *)photos
+                    withMapAnnotations:(NSArray *)annotations
+                                sender:(ImageListTableViewController *)sender
+{
+    [self refreshMapWithAnnotations:annotations];
+}
+ */
 @end

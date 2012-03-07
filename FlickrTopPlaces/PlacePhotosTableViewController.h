@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ImageListTableViewController.h"
 
+@class PlacePhotosTableViewController;
+
 @interface PlacePhotosTableViewController : ImageListTableViewController
 @property (nonatomic, strong) NSDictionary* place;
 @end

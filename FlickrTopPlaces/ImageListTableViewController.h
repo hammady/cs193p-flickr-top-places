@@ -7,8 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SplitViewControllerAwareTableViewController.h"
 
-@interface ImageListTableViewController : UITableViewController
+@class ImageListTableViewController;
+
+/*@protocol ImageListTableViewControllerDelegate <NSObject>
+@optional
+-(void) imageListTVCNewPhotosAvailable:(NSArray*) photos 
+                    withMapAnnotations:(NSArray*) annotations
+                                sender:(ImageListTableViewController*) sender;
+@end
+*/
+
+@interface ImageListTableViewController : SplitViewControllerAwareTableViewController
 @property (nonatomic, strong) NSArray* imageList;
 @property (nonatomic) BOOL reversedList;
+@property (nonatomic, readonly) NSArray* mapAnnotations;
+//@property (nonatomic, weak) id <ImageListTableViewControllerDelegate> delegate;
 @end
