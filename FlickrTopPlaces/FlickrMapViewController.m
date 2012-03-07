@@ -18,6 +18,7 @@
 @implementation FlickrMapViewController
 @synthesize mapView = _mapView;
 @synthesize annotations = _annotations;
+@synthesize mapType = _mapType;
 @synthesize delegate = _delegate;
 
 #pragma mark utility methods
@@ -74,14 +75,26 @@
     self.splitViewController.delegate = self;
     // attach annotations to mapView
     [self updateMapWithAnnotations:self.annotations];
+    // set map type
+    NSNumber *savedMapType = [[NSUserDefaults standardUserDefaults] objectForKey:@"mapType"];
+    if (savedMapType != nil) {
+        self.mapView.mapType = [savedMapType integerValue];
+        self.mapType.selectedSegmentIndex = [savedMapType integerValue];
+    }
 }
 
 - (void)viewDidUnload
 {
     [self setMapView:nil];
+    [self setMapType:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -168,6 +181,24 @@ calloutAccessoryControlTapped:(UIControl *)control
               inOrientation:(UIInterfaceOrientation)orientation
 {
     return NO;
+}
+
+#pragma mark - actions
+
+- (IBAction)mapTypeChanged:(UISegmentedControl *)sender
+{
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            self.mapView.mapType = MKMapTypeStandard;
+            break;
+        case 1:
+            self.mapView.mapType = MKMapTypeSatellite;
+            break;
+        case 2:
+            self.mapView.mapType = MKMapTypeHybrid;
+            break;
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:self.mapView.mapType] forKey:@"mapType"];
 }
 
 @end

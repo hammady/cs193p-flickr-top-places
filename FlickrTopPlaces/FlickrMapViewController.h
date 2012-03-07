@@ -21,5 +21,6 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 // the model is an array of id <MKAnnotation>
 @property (strong, nonatomic) NSArray* annotations;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *mapType;
 @property (weak, nonatomic) id <FlickrMapViewControllerDelegate> delegate;
 @end
