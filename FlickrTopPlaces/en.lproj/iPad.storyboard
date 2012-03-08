@@ -230,12 +230,12 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="bBu-Ke-rgN">
-                                <rect key="frame" x="191" y="897" width="386" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <rect key="frame" x="362" y="897" width="386" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <segments>
-                                    <segment title="Standard"/>
-                                    <segment title="Satellite"/>
-                                    <segment title="Hybrid"/>
+                                    <segment title="Standard" width="128"/>
+                                    <segment title="Satellite" width="128"/>
+                                    <segment title="Hybrid" width="128"/>
                                 </segments>
                                 <connections>
                                     <action selector="mapTypeChanged:" destination="FRp-n7-rci" eventType="valueChanged" id="gMe-0I-fPw"/>
@@ -287,41 +287,6 @@
             <point key="canvasLocation" x="206" y="586"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="FlickrImageViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrImageViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="FlickrMapViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrMapViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="mapType" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-            </relationships>
-        </class>
-        <class className="FlickrTopPlacesTableViewController" superclassName="SplitViewControllerAwareTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FlickrTopPlacesTableViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="refresh:"/>
-                <relationship kind="outlet" name="refreshButton" candidateClass="UIBarButtonItem"/>
-            </relationships>
-        </class>
-        <class className="ImageListTableViewController" superclassName="SplitViewControllerAwareTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ImageListTableViewController.h"/>
-        </class>
-        <class className="PlacePhotosTableViewController" superclassName="ImageListTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlacePhotosTableViewController.h"/>
-        </class>
-        <class className="RecentPhotosTableViewController" superclassName="ImageListTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecentPhotosTableViewController.h"/>
-        </class>
-        <class className="SplitViewControllerAwareTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SplitViewControllerAwareTableViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
