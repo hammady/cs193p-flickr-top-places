@@ -72,7 +72,7 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
-    self.splitViewController.delegate = self;
+
     // attach annotations to mapView
     [self updateMapWithAnnotations:self.annotations];
     // set map type

@@ -14,8 +14,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /* the following sets the delegate of the SplitViewController to the first
+     view controller in the detail view of the split VC. Although this might seem
+     unnecessary, and that that VC could sets itself as the delegate in its 
+     viewDidLoad, but that won't set the intial layout if app started in portrait mode
+     i.e. master won't show up if it was intended to show, or the popover button
+     won't show up. That's all because setting delegate (and wiring up its methods)
+     will be delayed and won't get into action when app launches in portrait
+    */
     // Override point for customization after application launch.
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
+        UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+        splitViewController.delegate = (id)navigationController.topViewController;
+    }
     return YES;
+
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
