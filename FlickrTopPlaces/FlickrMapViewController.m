@@ -136,8 +136,7 @@
     if (thumbnailView) {
         thumbnailView.image = nil;
         
-        dispatch_queue_t photosQueue = dispatch_queue_create("Flickr photos fetcher", NULL);
-        dispatch_async(photosQueue, ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             FlickrPhotoMKAnnotation* photoAnnotation = (FlickrPhotoMKAnnotation*) view.annotation;
             __block UIImage* image = [self.delegate flickrMapViewControllerThumbnailWithInfo:photoAnnotation.infoDict];
@@ -153,7 +152,6 @@
                     thumbnailView.image = image;
             });
         });
-        dispatch_release(photosQueue);            
     }
 }
 

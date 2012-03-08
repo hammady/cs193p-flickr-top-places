@@ -108,10 +108,9 @@
     
     self.navigationItem.title = [titleAndDescr objectAtIndex:0];
     
-    dispatch_queue_t photosQueue = dispatch_queue_create("Flickr photos fetcher", NULL);
-    dispatch_async(photosQueue, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        __block UIImage* image = 
+        UIImage* image = 
         [FlickrImage imageWithInfo:info
                             format:FlickrFetcherPhotoFormatLarge
          useCache:YES];
@@ -140,7 +139,6 @@
             }
         });
     });
-    dispatch_release(photosQueue);    
 }
 
 #pragma makr UIScrollViewDelegate methods

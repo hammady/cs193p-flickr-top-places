@@ -150,15 +150,13 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     
     __block NSArray* remotePlaces;
-    dispatch_queue_t fetcher_thread = dispatch_queue_create("Flickr downloader", NULL);
-    dispatch_async(fetcher_thread, ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         remotePlaces = [FlickrFetcherHelper topPlacesPerCountry];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.navigationItem.leftBarButtonItem = sender;
             self.countries = remotePlaces;
         });
     });
-    dispatch_release(fetcher_thread);
     //NSLog(@"Top Places => %@", self.places);
 }
 

@@ -14,7 +14,6 @@
 #import "FlickrImage.h"
 
 @interface ImageListTableViewController() <FlickrMapViewControllerDelegate>
-@property (nonatomic) dispatch_queue_t thumbnailsQueue;
 @property (nonatomic, strong) UIImage *thumbnailPlaceholder;
 @end
 
@@ -22,7 +21,6 @@
 
 @synthesize imageList = _imageList;
 @synthesize reversedList = _reversedList;
-@synthesize thumbnailsQueue = _thumbnailsQueue;
 @synthesize thumbnailPlaceholder = _thumbnailPlaceholder;
 
 //@synthesize delegate = _delegate;
@@ -93,19 +91,9 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void) viewWillAppear:(BOOL)animated
-{
-    self.thumbnailsQueue  = dispatch_queue_create("Flickr thumbnails fetcher", NULL);    
-}
-
 -(void) viewDidAppear:(BOOL)animated
 {
     [self refreshMapWithAnnotations:self.mapAnnotations];
-}
-
--(void) viewWillDisappear:(BOOL)animated
-{
-    dispatch_release(self.thumbnailsQueue);            
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -143,8 +131,9 @@
     NSString* originalTitle = cell.textLabel.text;
     
     // load thumbnail
-    //dispatch_queue_t thumbnailQueue = dispatch_queue_create("Flickr thumbnail fetcher", NULL);
-    dispatch_async(self.thumbnailsQueue, ^{
+    // we use the global concurrent queue because we don't care about the order
+    // of loading of thumbnails and we indeed want them to load in parallel
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         UIImage* image = [FlickrImage imageWithInfo:photo format:FlickrFetcherPhotoFormatSquare useCache:YES];
         
@@ -163,7 +152,6 @@
             //cell.detailTextLabel.text = [NSString stringWithFormat:@"width: %f, height: %f", image.size.width, image.size.height];
         });
     });
-    //dispatch_release(thumbnailQueue);            
 
     return cell;
 }
