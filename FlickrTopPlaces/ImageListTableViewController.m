@@ -14,15 +14,27 @@
 #import "FlickrImage.h"
 
 @interface ImageListTableViewController() <FlickrMapViewControllerDelegate>
+@property (nonatomic) dispatch_queue_t thumbnailsQueue;
+@property (nonatomic, strong) UIImage *thumbnailPlaceholder;
 @end
 
 @implementation ImageListTableViewController
 
 @synthesize imageList = _imageList;
 @synthesize reversedList = _reversedList;
+@synthesize thumbnailsQueue = _thumbnailsQueue;
+@synthesize thumbnailPlaceholder = _thumbnailPlaceholder;
+
 //@synthesize delegate = _delegate;
 
 #pragma mark - setters/getters
+
+-(UIImage*) thumbnailPlaceholder
+{
+    if (!_thumbnailPlaceholder)
+        _thumbnailPlaceholder = [UIImage imageNamed:@"thumbnail_placeholder.png"];
+    return _thumbnailPlaceholder;
+}
 
 -(NSArray*) mapAnnotations
 {
@@ -81,10 +93,19 @@
     // e.g. self.myOutlet = nil;
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    self.thumbnailsQueue  = dispatch_queue_create("Flickr thumbnails fetcher", NULL);    
+}
 
 -(void) viewDidAppear:(BOOL)animated
 {
     [self refreshMapWithAnnotations:self.mapAnnotations];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    dispatch_release(self.thumbnailsQueue);            
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -116,7 +137,34 @@
     
     cell.textLabel.text = [titleAndDescr objectAtIndex:0];
     cell.detailTextLabel.text = [titleAndDescr objectAtIndex:1];
+    cell.imageView.image = self.thumbnailPlaceholder;
     
+    // point to cell text to compare it afterwards as it may change by reusing
+    NSString* originalTitle = cell.textLabel.text;
+    
+    // load thumbnail
+    //dispatch_queue_t thumbnailQueue = dispatch_queue_create("Flickr thumbnail fetcher", NULL);
+    dispatch_async(self.thumbnailsQueue, ^{
+        
+        UIImage* image = [FlickrImage imageWithInfo:photo format:FlickrFetcherPhotoFormatSquare useCache:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // make sure we are modifying the imageView in the row that originally
+            // appeared as cells are reused, we do this by comparing
+            // the local originalTitle which is basically copied on stack
+            // to be used by this block, the fresh cell title is checked
+            // by inspecting the attached one to the cell textLabel which changes
+            // only in this enclosing method
+            
+            if ([cell.textLabel.text isEqualToString:originalTitle]) {
+                cell.imageView.image = image;
+            }
+            //cell.textLabel.text = @"back";
+            //cell.detailTextLabel.text = [NSString stringWithFormat:@"width: %f, height: %f", image.size.width, image.size.height];
+        });
+    });
+    //dispatch_release(thumbnailQueue);            
+
     return cell;
 }
 
@@ -135,7 +183,6 @@
         }
         else if ([vc isKindOfClass:[FlickrImageViewController class]]) {
             [(FlickrImageViewController*) vc reloadImageWithInfo:photo];
-            // TODO RECENTS INSIDE RELOADIMAGE
         }
     }
 }
@@ -180,7 +227,8 @@
 -(UIImage*) flickrMapViewControllerThumbnailWithInfo:(NSDictionary *)info
 {
     return [FlickrImage imageWithInfo:info
-                                format:FlickrFetcherPhotoFormatSquare];
+                                format:FlickrFetcherPhotoFormatSquare 
+                             useCache:YES];
 }
 
 @end

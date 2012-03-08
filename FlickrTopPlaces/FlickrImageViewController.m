@@ -113,7 +113,9 @@
         
         __block UIImage* image = 
         [FlickrImage imageWithInfo:info
-                            format:FlickrFetcherPhotoFormatLarge];
+                            format:FlickrFetcherPhotoFormatLarge
+         useCache:YES];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
             

@@ -43,7 +43,7 @@
 {
     [super viewWillAppear:animated];
     self.imageList = [RecentPhotos retrieveList];
-    [self.tableView reloadData];    
+    [self.tableView reloadData];
 }
 
 /*

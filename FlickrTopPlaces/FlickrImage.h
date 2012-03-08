@@ -11,6 +11,6 @@
 
 @interface FlickrImage : UIImage
 
-+(UIImage*) imageWithInfo:(NSDictionary*) info format:(FlickrFetcherPhotoFormat)format;
++(UIImage*) imageWithInfo:(NSDictionary*) info format:(FlickrFetcherPhotoFormat)format useCache:(BOOL) useCache;
 
 @end

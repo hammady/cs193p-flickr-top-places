@@ -156,13 +156,15 @@ static UInt64 _cacheSize;
 }
 
 +(UIImage*) imageWithInfo:(NSDictionary *)info format:(FlickrFetcherPhotoFormat)format
+useCache:(BOOL) useCache
 {
     NSData* imageData;
 
     // check if image is in cache, load it, else request it from Flickr
-    id cacheResult = [self cachedImageData:info format:format];
+    id cacheResult;
+    if (useCache) cacheResult = [self cachedImageData:info format:format];
     
-    if ([cacheResult isKindOfClass:[NSString class]]) {
+    if (!useCache || [cacheResult isKindOfClass:[NSString class]]) {
         // cache miss, fetch it
         
         // simulate slow connection
@@ -173,7 +175,7 @@ static UInt64 _cacheSize;
                  format:format];
         NSLog(@"Cache miss, fetched image with data length: %x", imageData.length);
         // store it back into cache
-        [self cacheImageWithData:imageData filePath:cacheResult];
+        if (useCache) [self cacheImageWithData:imageData filePath:cacheResult];
     } else {
         // cache hit, use it
         imageData = (NSData*) cacheResult;

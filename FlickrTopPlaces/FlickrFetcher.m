@@ -103,6 +103,7 @@ static int maxResults = 50;
 
 + (NSData *)imageDataForPhotoWithURLString:(NSString *)urlString
 {
+    NSLog(@"fetching image with URL: %@", urlString);
 	return [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
 }
 
