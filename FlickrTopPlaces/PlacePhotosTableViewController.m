@@ -29,10 +29,30 @@
     
     self.navigationItem.title = [FlickrFetcherHelper cityNameForPlaceWithName:[self.place objectForKey:PLACE_DICT_NAME]];
     
-    __block NSArray* photos;
+    __block NSMutableArray* photos;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        photos = [FlickrFetcherHelper photosAtPlace:[self.place objectForKey:PLACE_DICT_PLACEID]];
-        //NSLog(@"Photos returned: %@", photos);
+        NSArray *barePhotos = [FlickrFetcherHelper photosAtPlace:[self.place objectForKey:PLACE_DICT_PLACEID]];
+        // attach place dict to each photo (needed later in saving photo in db)
+        // also remove tags with : in them
+        photos = [NSMutableArray arrayWithCapacity:barePhotos.count];
+        for (NSDictionary* photo in barePhotos) {
+            NSMutableDictionary *photoDict = [photo mutableCopy];
+            [photoDict setObject:self.place forKey:PHOTO_DICT_PLACE];
+            
+            NSString* tags = [photo objectForKey:PHOTO_DICT_TAGS];
+            NSArray *tagArray = [tags componentsSeparatedByString:@" "];
+            NSMutableArray *newTagArray = [[NSMutableArray alloc] initWithCapacity:tagArray.count];
+            NSCharacterSet *set = [NSCharacterSet characterSetWithCharactersInString:@":"];
+            for (NSString* tagName in tagArray) {
+                if ([tagName rangeOfCharacterFromSet:set].location == NSNotFound) {
+                    [newTagArray addObject:tagName];
+                }
+            }
+            [photoDict setObject:newTagArray forKey:PHOTO_DICT_TAGS];
+
+            [photos addObject:photoDict];
+        }
+        NSLog(@"Photos with places: %@", photos);
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
             self.navigationItem.rightBarButtonItem = originalRightButton;

@@ -66,7 +66,7 @@
 {
     if (_imageList != imageList) {
         _imageList = imageList;
-        if (self.view.window) [self.tableView reloadData];
+        [self.tableView reloadData];
         [self refreshMapWithAnnotations:self.mapAnnotations];
     }
 }
@@ -167,7 +167,7 @@
         UIViewController* vc = [self topVisibleViewController:self.splitViewController];
         
         if ([vc isKindOfClass:[FlickrMapViewController class]]) {        
-            [vc performSegueWithIdentifier:@"Image view segue from map" sender:photo];
+            [vc performSegueWithIdentifier:@"View Image" sender:photo];
         }
         else if ([vc isKindOfClass:[FlickrImageViewController class]]) {
             [(FlickrImageViewController*) vc reloadImageWithInfo:photo];
@@ -177,9 +177,7 @@
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"Image view segue"]
-         || [segue.identifier isEqualToString:@"Image view segue from recents"]
-        || [segue.identifier isEqualToString:@"Image view segue from map"]) {
+    if ([segue.identifier isEqualToString:@"View Image"]) {
         NSInteger row = self.tableView.indexPathForSelectedRow.row;
         if (self.reversedList) row = self.imageList.count - row -1;
         NSDictionary* photo = [self.imageList 
@@ -197,12 +195,12 @@
 
 -(NSString*) flickrMapViewControllerSegueIdForAnnotationDict:(NSDictionary*) dict
 {
-    return @"Image view segue from map";
+    return @"View Image";
 }
 
 -(void) flickrMapViewControllerPrepareForSegue:(UIStoryboardSegue *)segue withDict:(NSDictionary *)dict
 {
-    if ([segue.identifier isEqualToString:@"Image view segue from map"]) {
+    if ([segue.identifier isEqualToString:@"View Image"]) {
         [segue.destinationViewController reloadImageWithInfo:dict];
     }
 }

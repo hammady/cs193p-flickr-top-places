@@ -18,6 +18,8 @@
 #define PHOTO_DICT_ID   @"id"
 #define PHOTO_DICT_LAT @"latitude"
 #define PHOTO_DICT_LNG @"longitude"
+#define PHOTO_DICT_TAGS @"tags"
+#define PHOTO_DICT_PLACE  @"place"
 
 #define COUNTRIES_DICT_COUNTRYNAME @"CountryName"
 #define COUNTRIES_DICT_PLACES @"Places"
@@ -27,6 +29,7 @@
 +(NSString*) cityNameForPlaceWithName:(NSString*) name;
 +(NSString*) countryNameForPlaceWithName:(NSString*) name;
 +(NSString*) restOfPlaceNameForPlaceWithName:(NSString*) name;
++(NSString*) restOfPlaceNameAndCountryForPlaceWithName:(NSString*) name;
 +(NSArray*) photoTitleAndDescriptionForPhoto:(NSDictionary*) photo; 
 +(NSArray*) topPlacesPerCountry;
 

@@ -10,19 +10,50 @@
 #import "FlickrFetcherHelper.h"
 #import "FlickrImage.h"
 #import "RecentPhotos.h"
+#import "Photo+Create.h"
 
-@interface FlickrImageViewController()  <UIScrollViewDelegate>
+@interface FlickrImageViewController()  <UIScrollViewDelegate, UIActionSheetDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *visitButton;
 @property (strong, nonatomic) NSDictionary* imageInfo;
+@property (weak, nonatomic) IBOutlet UILabel *tagListLabel;
+@property (strong, nonatomic) UIActionSheet* actionSheet;
 -(void) recalculateMinAndMaxZoomScale;
 -(void) displayWholeImage;
+-(void) unvisitPhoto;
 @end
 
 @implementation FlickrImageViewController
+@synthesize visitButton = _visitButton;
 @synthesize imageView = _imageView;
 @synthesize scrollView = _scrollView;
 @synthesize imageInfo = _imageInfo;
+@synthesize tagListLabel = _tagListLabel;
+@synthesize documentContext = _documentContext;
+@synthesize actionSheet = _actionSheet;
+
+#pragma mark - setters/getters
+-(void) setDocumentContext:(NSManagedObjectContext *)documentContext
+{
+    _documentContext = documentContext;
+
+    if (documentContext) {
+        self.visitButton.title = @"Unvisit";
+    }
+    else {
+        self.visitButton.title = @"Visit";
+    }
+
+}
+
+-(UIActionSheet* )actionSheet
+{
+    if (!_actionSheet) {
+        _actionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure?" delegate:self cancelButtonTitle:@"Not yet" destructiveButtonTitle:@"Unvisit" otherButtonTitles:nil];
+    }
+    return _actionSheet;
+}
 
 #pragma mark - View lifecycle
 
@@ -44,11 +75,20 @@
 {
     [self setImageView:nil];
     [self setScrollView:nil];
+    [self setVisitButton:nil];
+    [self setTagListLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSArray* tagArray = [self.imageInfo objectForKey:PHOTO_DICT_TAGS];
+    self.tagListLabel.text = [tagArray componentsJoinedByString:@" | "];
+
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
@@ -97,11 +137,16 @@
     [RecentPhotos appendPhoto:info];
 
     self.imageView.image = nil;
+    self.tagListLabel.text = @"";   // in prepareForSegue outlets r not ready yet!
+
+    // clear any document context and consequently change visit/unvisit button title
+    self.documentContext = nil;
     
     UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] 
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     spinner.hidesWhenStopped = YES;
     [spinner startAnimating];
+    UIBarButtonItem *originalButton = self.navigationItem.rightBarButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
     
     NSArray* titleAndDescr = [FlickrFetcherHelper photoTitleAndDescriptionForPhoto:info];
@@ -117,6 +162,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [spinner stopAnimating];
+            self.navigationItem.rightBarButtonItem = originalButton;
             
             /* we compare instance variable self.imageInfo (which might have
              been changed by a later call to reloadImageWithInfo) with the local
@@ -141,11 +187,65 @@
     });
 }
 
-#pragma makr UIScrollViewDelegate methods
+#pragma mark - UIScrollViewDelegate methods
 
 -(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.imageView;
 }
 
+#pragma mark - actions
+
+- (IBAction)visitButtonPressed:(id)sender
+{
+    if (self.documentContext) {
+        // unvisiting
+        [self.actionSheet showInView:self.view];
+    } else {
+        // visiting
+        [self performSegueWithIdentifier:@"Select vacation" sender:self];
+    }
+}
+
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Select vacation"]) {
+        VacationsTableViewController *vc = segue.destinationViewController;
+        if ([vc isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nvc = (UINavigationController*) vc;
+            vc = (VacationsTableViewController*) nvc.topViewController;
+        }
+        vc.delegate = self;
+    }
+}
+
+-(void) unvisitPhoto
+{
+    Photo *photo = [Photo photoWithFlickrData:self.imageInfo inManagedObjectContext:self.documentContext];
+    [self.documentContext deleteObject:photo];
+    self.documentContext = nil;
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - VacationsTableViewControllerModalDelegate methods
+
+-(void) vacationsTVCSelectedVacationDocument:(UIManagedDocument *)document
+{
+    // visit this image in this document
+    self.documentContext = document.managedObjectContext;
+    [Photo photoWithFlickrData:self.imageInfo inManagedObjectContext:document.managedObjectContext];
+    //[document saveToURL:document.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:^(BOOL success) {
+        [self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    //}];
+}
+
+#pragma mark - UIActionSheetDelegate methods
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.destructiveButtonIndex)
+        [self unvisitPhoto];
+}
 @end

@@ -31,6 +31,14 @@
     return [mutableComp componentsJoinedByString:@", "];
 }
 
++(NSString*) restOfPlaceNameAndCountryForPlaceWithName:(NSString*) name
+{
+    NSArray* comp = [name componentsSeparatedByString:@", "];
+    NSMutableArray* mutableComp = [comp mutableCopy];
+    [mutableComp removeObjectAtIndex:0];    // city name
+    return [mutableComp componentsJoinedByString:@", "];    
+}
+
 +(NSArray*) photoTitleAndDescriptionForPhoto:(NSDictionary *)photo
 {
     NSString* title = [photo objectForKey:PHOTO_DICT_TITLE];

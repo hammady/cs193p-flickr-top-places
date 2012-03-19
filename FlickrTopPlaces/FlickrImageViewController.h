@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VacationsTableViewController.h"
 
-@interface FlickrImageViewController : UIViewController
+@interface FlickrImageViewController : UIViewController <VacationsTableViewControllerModalDelegate>
 -(void) reloadImageWithInfo:(NSDictionary*) info;
+@property (nonatomic, strong) NSManagedObjectContext* documentContext;
 @end

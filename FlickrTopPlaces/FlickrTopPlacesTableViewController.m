@@ -28,7 +28,7 @@
 
 -(NSArray*) mapAnnotations
 {
-    NSMutableArray* annotations = [[NSMutableArray alloc] initWithCapacity:100];
+    NSMutableArray* annotations = [[NSMutableArray alloc] initWithCapacity:50];
     for (NSDictionary* countryDict in self.countries) {
         NSString* countryName = [countryDict objectForKey:COUNTRIES_DICT_COUNTRYNAME];
         NSArray* countryPlaces = [countryDict objectForKey:COUNTRIES_DICT_PLACES];
@@ -81,6 +81,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self refresh:self.refreshButton];
+    //[self.tabBarItem setTitle: @"Top Places"];
 }
 
 - (void)viewDidUnload
@@ -137,7 +138,7 @@
     NSDictionary* place = [places objectAtIndex:indexPath.row];
     NSString* placeName = [place objectForKey:PLACE_DICT_NAME];
     cell.textLabel.text = [FlickrFetcherHelper cityNameForPlaceWithName:placeName];
-    cell.detailTextLabel.text =[FlickrFetcherHelper restOfPlaceNameForPlaceWithName:placeName];
+    cell.detailTextLabel.text = [FlickrFetcherHelper restOfPlaceNameForPlaceWithName:placeName];
     
     return cell;
 }
