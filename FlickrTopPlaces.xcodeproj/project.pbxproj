@@ -55,8 +55,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3106BCEC151680F0000DDE66 /* VacationNameInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; name = VacationNameInputViewController.h; path = FlickrTopPlaces/VacationNameInputViewController.h; sourceTree = "<group>"; };
-		3106BCED151680F0000DDE66 /* VacationNameInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VacationNameInputViewController.m; path = FlickrTopPlaces/VacationNameInputViewController.m; sourceTree = "<group>"; };
+		3106BCEC151680F0000DDE66 /* VacationNameInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationNameInputViewController.h; sourceTree = "<group>"; };
+		3106BCED151680F0000DDE66 /* VacationNameInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationNameInputViewController.m; sourceTree = "<group>"; };
 		310D6DF814F2E4770083D314 /* FlickrTopPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrTopPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		310D6DFC14F2E4770083D314 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		310D6DFE14F2E4770083D314 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -160,8 +160,6 @@
 		310D6DED14F2E4770083D314 = {
 			isa = PBXGroup;
 			children = (
-				3106BCEC151680F0000DDE66 /* VacationNameInputViewController.h */,
-				3106BCED151680F0000DDE66 /* VacationNameInputViewController.m */,
 				31EC5172150D492800867F32 /* CoreData.framework */,
 				31204F0415002C1200B0DD04 /* CoreLocation.framework */,
 				31EC5168150D3E6A00867F32 /* CoreData Models */,
@@ -198,6 +196,8 @@
 				31502D4C1504C01500E21714 /* SplitViewControllerAwareTableViewController.h */,
 				316CD238150802DC00C4AF18 /* thumbnail_placeholder.png */,
 				31502D4D1504C01500E21714 /* SplitViewControllerAwareTableViewController.m */,
+				3106BCEC151680F0000DDE66 /* VacationNameInputViewController.h */,
+				3106BCED151680F0000DDE66 /* VacationNameInputViewController.m */,
 				31EC514A150CAFD300867F32 /* CoreDataTableViewController.h */,
 				31EC514B150CAFD300867F32 /* CoreDataTableViewController.m */,
 				31EC5153150CE9B100867F32 /* VacationListByPlaceOrTagTableViewController.h */,
